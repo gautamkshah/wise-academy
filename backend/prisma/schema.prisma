@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  firebase_uid  String?   @unique
+  name          String
+  email         String   @unique
+  college       String?
+  year          Int?
+  photo         String?
+  leetcode_id   String?
+  codeforces_id String?
+  codechef_id   String?
+  atcoder_id    String?
+  hackerrank_id String?
+  created_at    DateTime @default(now())
+
+  progress      UserProblem[]
+  stats         UserStats?
+  testimonials  Testimonial[]
+}
+
+model Course {
+  id          String    @id @default(uuid())
+  title       String    @unique
+  description String?
+  level       String    // Beginner, Intermediate, Advanced
+  chapters    Chapter[]
+}
+
+model Chapter {
+  id        String    @id @default(uuid())
+  title     String
+  order_no  Int
+  course_id String
+  course    Course    @relation(fields: [course_id], references: [id])
+  problems  Problem[]
+
+  @@unique([course_id, order_no])
+}
+
+model Problem {
+  id            String   @id @default(uuid())
+  title         String
+  platform      String   // LeetCode, CodeForces, etc.
+  leetcode_link String?
+  difficulty    String   // Easy, Medium, Hard
+  tags          String[]
+  chapter_id    String
+  chapter       Chapter  @relation(fields: [chapter_id], references: [id])
+  
+  userProgress  UserProblem[]
+}
+
+model UserProblem {
+  user_id    String
+  problem_id String
+  status     String   // PENDING, SOLVED
+  solved_at  DateTime?
+
+  user    User    @relation(fields: [user_id], references: [id])
+  problem Problem @relation(fields: [problem_id], references: [id])
+
+  @@id([user_id, problem_id])
+}
+
+model UserStats {
+  user_id        String @id
+  total_solved   Int    @default(0)
+  leetcode_solved Int   @default(0)
+  cf_solved      Int    @default(0)
+  cc_solved      Int    @default(0)
+  leetcode_rating Int?
+  cf_rating      Int?
+  cc_rating      Int?
+  atcoder_rating Int?
+  
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Testimonial {
+  id      String @id @default(uuid())
+  user_id String
+  message String
+  rating  Int
+
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Contact {
+  id      String @id @default(uuid())
+  name    String
+  email   String
+  message String
+}

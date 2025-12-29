@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "UserStats" ADD COLUMN     "cc_solved" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "cf_solved" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "leetcode_solved" INTEGER NOT NULL DEFAULT 0;
