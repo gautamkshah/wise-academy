@@ -32,4 +32,17 @@ export class CourseService {
             },
         });
     }
+
+    async update(id: string, data: { title?: string; description?: string; level?: string }): Promise<Course> {
+        return this.prisma.course.update({
+            where: { id },
+            data,
+        });
+    }
+
+    async remove(id: string): Promise<Course> {
+        return this.prisma.course.delete({
+            where: { id },
+        });
+    }
 }

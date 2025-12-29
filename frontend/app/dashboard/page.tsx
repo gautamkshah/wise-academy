@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import { auth } from '../../lib/firebase';
@@ -20,9 +20,11 @@ interface Stats {
     codechef_id?: string;
 }
 
+import { useAuth } from '../../context/AuthContext';
+
 export default function DashboardPage() {
     const router = useRouter();
-    const [user, setUser] = useState<any>(null);
+    const { user, loading: authLoading } = useAuth();
     const [stats, setStats] = useState<Stats>({
         total_solved: 0,
         leetcode_solved: 0,
@@ -38,39 +40,19 @@ export default function DashboardPage() {
     const [handleInput, setHandleInput] = useState('');
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            if (!currentUser) {
-                router.push('/login');
-            } else {
-                try {
-                    // 1. Sync session with backend to ensure DB is up to date and we have UID mapping
-                    const token = await currentUser.getIdToken();
-                    const loginRes = await fetch('http://localhost:3000/auth/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ token }),
-                    });
+        if (!authLoading && !user) {
+            router.push('/login');
+            return;
+        }
 
-                    if (loginRes.ok) {
-                        const loginData = await loginRes.json();
-                        const dbUser = loginData.user;
-
-                        // 2. Fetch full stats and handle data using the internal ID or UID
-                        await fetchDashboardData(dbUser.id, token);
-                        setUser({ ...currentUser, ...dbUser });
-                    } else {
-                        console.error('Session sync failed');
-                        setLoading(false);
-                    }
-                } catch (error) {
-                    console.error('Error during session sync:', error);
-                    setLoading(false);
-                }
-            }
-        });
-
-        return () => unsubscribe();
-    }, [auth, router]);
+        if (user && user.id) {
+            const loadData = async () => {
+                const token = await auth.currentUser?.getIdToken();
+                if (token) await fetchDashboardData(user.id!, token);
+            };
+            loadData();
+        }
+    }, [user, authLoading, router]);
 
     const fetchDashboardData = async (userId: string, token: string) => {
         try {
@@ -182,7 +164,7 @@ export default function DashboardPage() {
             <main className="flex-grow container mx-auto px-6 py-12">
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
                     <div>
-                        <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.name?.split(' ')[0]}!</h1>
+                        <h1 className="text-4xl font-bold mb-2">Welcome back, {(user?.name || user?.displayName || 'User').split(' ')[0]}!</h1>
                         <p className="text-gray-400">Master your craft, one problem at a time.</p>
                     </div>
                     <div className="flex gap-4">

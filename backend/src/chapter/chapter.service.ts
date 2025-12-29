@@ -21,4 +21,26 @@ export class ChapterService {
             },
         });
     }
+
+    async findOne(id: string): Promise<Chapter | null> {
+        return this.prisma.chapter.findUnique({
+            where: { id },
+            include: {
+                problems: true,
+            },
+        });
+    }
+
+    async update(id: string, data: { title?: string; order_no?: number; course_id?: string }): Promise<Chapter> {
+        return this.prisma.chapter.update({
+            where: { id },
+            data,
+        });
+    }
+
+    async remove(id: string): Promise<Chapter> {
+        return this.prisma.chapter.delete({
+            where: { id },
+        });
+    }
 }

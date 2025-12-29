@@ -30,4 +30,27 @@ export class ProblemService {
             where: { id },
         });
     }
+
+    async update(
+        id: string,
+        data: {
+            title?: string;
+            platform?: string;
+            leetcode_link?: string;
+            difficulty?: string;
+            tags?: string[];
+            chapter_id?: string;
+        },
+    ): Promise<Problem> {
+        return this.prisma.problem.update({
+            where: { id },
+            data,
+        });
+    }
+
+    async remove(id: string): Promise<Problem> {
+        return this.prisma.problem.delete({
+            where: { id },
+        });
+    }
 }

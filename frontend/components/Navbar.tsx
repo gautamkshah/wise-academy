@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
     const pathname = usePathname();
+    const { user } = useAuth();
 
     const navLinks = [
         { name: 'Home', href: '/' },
@@ -12,6 +14,10 @@ export default function Navbar() {
         { name: 'Leaderboard', href: '/leaderboard' },
         { name: 'Contact', href: '/contact' },
     ];
+
+    if (user?.role === 'ADMIN') {
+        navLinks.push({ name: 'Admin', href: '/admin' });
+    }
 
     return (
         <nav className="bg-gray-900/50 backdrop-blur-md sticky top-0 z-50 border-b border-gray-800">
@@ -26,7 +32,7 @@ export default function Navbar() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`text-sm font-medium transition ${pathname === link.href ? 'text-blue-400' : 'text-gray-400 hover:text-white'
+                                className={`text-sm font-bold uppercase tracking-widest transition ${pathname === link.href ? 'text-blue-400' : 'text-gray-400 hover:text-white'
                                     }`}
                             >
                                 {link.name}
@@ -35,10 +41,10 @@ export default function Navbar() {
                     </div>
 
                     <Link
-                        href="/dashboard"
+                        href={user ? "/dashboard" : "/login"}
                         className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2 px-6 rounded-full transition shadow-lg shadow-blue-600/20"
                     >
-                        Go to App
+                        {user ? 'Dashboard' : 'Login'}
                     </Link>
                 </div>
             </div>

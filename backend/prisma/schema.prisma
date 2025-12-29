@@ -9,6 +9,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id            String   @id @default(uuid())
   firebase_uid  String?   @unique
@@ -17,6 +22,7 @@ model User {
   college       String?
   year          Int?
   photo         String?
+  role          Role     @default(USER)
   leetcode_id   String?
   codeforces_id String?
   codechef_id   String?
@@ -35,15 +41,19 @@ model Course {
   description String?
   level       String    // Beginner, Intermediate, Advanced
   chapters    Chapter[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
 }
 
 model Chapter {
-  id        String    @id @default(uuid())
-  title     String
-  order_no  Int
-  course_id String
-  course    Course    @relation(fields: [course_id], references: [id])
-  problems  Problem[]
+  id         String    @id @default(uuid())
+  title      String
+  order_no   Int
+  course_id  String
+  course     Course    @relation(fields: [course_id], references: [id])
+  problems   Problem[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
 
   @@unique([course_id, order_no])
 }
@@ -57,6 +67,8 @@ model Problem {
   tags          String[]
   chapter_id    String
   chapter       Chapter  @relation(fields: [chapter_id], references: [id])
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now()) @updatedAt
   
   userProgress  UserProblem[]
 }
