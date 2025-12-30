@@ -5,9 +5,29 @@ import * as admin from 'firebase-admin';
 export class AuthService implements OnModuleInit {
     onModuleInit() {
         if (!admin.apps.length) {
-            const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || './service-account.json';
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            const serviceAccount = require(require('path').resolve(process.cwd(), serviceAccountPath));
+            const path = require('path');
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const fs = require('fs');
+
+            let serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+            if (!serviceAccountPath) {
+                if (fs.existsSync('/etc/secrets/service-account.json')) {
+                    serviceAccountPath = '/etc/secrets/service-account.json';
+                } else {
+                    serviceAccountPath = './service-account.json';
+                }
+            }
+
+            const resolvedPath = path.isAbsolute(serviceAccountPath)
+                ? serviceAccountPath
+                : path.resolve(process.cwd(), serviceAccountPath);
+
+            console.log(`[AuthService] Loading Firebase credentials from: ${resolvedPath}`);
+
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const serviceAccount = require(resolvedPath);
 
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount),
