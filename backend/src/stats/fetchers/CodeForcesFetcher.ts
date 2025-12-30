@@ -37,4 +37,24 @@ export class CodeForcesFetcher implements IPlatformFetcher {
             return null;
         }
     }
+
+    async fetchSolvedProblems(username: string): Promise<Set<string> | null> {
+        try {
+            const statusRes = await axios.get(`https://codeforces.com/api/user.status?handle=${username}`);
+            if (statusRes.data.status !== 'OK') return null;
+
+            const solvedProblems = new Set<string>();
+            statusRes.data.result.forEach((sub: any) => {
+                if (sub.verdict === 'OK') {
+                    // Create ID as ContestId + Index (e.g., 4A, 123C)
+                    const problemId = `${sub.problem.contestId}${sub.problem.index}`;
+                    solvedProblems.add(problemId);
+                }
+            });
+            return solvedProblems;
+        } catch (error) {
+            this.logger.error(`Error fetching CodeForces solved problems for ${username}:`, error.message);
+            return null;
+        }
+    }
 }

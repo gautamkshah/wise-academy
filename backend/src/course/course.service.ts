@@ -28,6 +28,14 @@ export class CourseService {
                     orderBy: {
                         order_no: 'asc',
                     },
+                    include: {
+                        problems: {
+                            select: {
+                                id: true,
+                                difficulty: true,
+                            }
+                        }
+                    }
                 },
             },
         });

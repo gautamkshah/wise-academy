@@ -14,10 +14,12 @@ import { ContactModule } from './contact/contact.module';
 
 import { ConfigModule } from '@nestjs/config';
 
+import { ContestModule } from './contest/contest.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    PrismaModule, AuthModule, UserModule, CourseModule, ChapterModule, ProblemModule, ProgressModule, StatsModule, TestimonialModule, ContactModule],
+    PrismaModule, AuthModule, UserModule, CourseModule, ChapterModule, ProblemModule, ProgressModule, StatsModule, TestimonialModule, ContactModule, ContestModule],
   controllers: [AppController],
   providers: [AppService],
 })

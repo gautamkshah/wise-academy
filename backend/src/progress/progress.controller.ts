@@ -8,17 +8,14 @@ export class ProgressController {
 
     @UseGuards(AuthGuard)
     @Post('solve')
-    markSolved(@Body('problemId') problemId: string, @Req() req) {
-        const userId = req.user.uid; // Assuming uid is mapped from Firebase token
-        // Note: We need to ensure logic that maps Firebase UID to our DB User ID.
-        // For now, let's assume the user service handles this translation or we use the Firebase UID as our primary key.
-        // Given the schema using @default(uuid()), we likely need a lookup.
-        // Let's assume the client sends the proper DB User ID or we modify the AuthGuard/Service to fetch it.
+    async updateStatus(@Body() body: { problemId: string, userId: string, status: 'PENDING' | 'SOLVED' }) {
+        return this.progressService.updateProblemStatus(body.userId, body.problemId, body.status);
+    }
 
-        // Simplified for MVP: accepting userId from body for testing or needing integration
-        // But logically, it should come from the token. 
-        // Let's require userId in body for now to keep it simple until full integration.
-        return this.progressService.markProblemSolved(req.body.userId, problemId);
+    @UseGuards(AuthGuard)
+    @Post('sync')
+    async syncExternal(@Body('userId') userId: string) {
+        return this.progressService.syncWithExternalPlatforms(userId);
     }
 
     @Get(':userId')

@@ -14,6 +14,14 @@ export class StatsService {
 
     constructor(private prisma: PrismaService) { }
 
+    async fetchRecentLeetCodeSubmissions(username: string) {
+        return this.leetcodeFetcher.fetchRecentSubmissions(username);
+    }
+
+    async fetchCodeForcesSolved(username: string) {
+        return this.cfFetcher.fetchSolvedProblems(username);
+    }
+
     @Cron(CronExpression.EVERY_HOUR)
     async handleCron() {
         this.logger.debug('Running hourly stats update...');
@@ -73,7 +81,9 @@ export class StatsService {
             where: { user_id: user.id, status: 'SOLVED' }
         });
 
-        const totalSolved = leetcodeSolved + cfSolved + ccSolved + academySolved;
+        // Total solved should only include external platforms to avoid double counting
+        // since academySolved are just subsets of these external problems.
+        const totalSolved = leetcodeSolved + cfSolved + ccSolved;
 
         try {
             const result = await (this.prisma.userStats as any).upsert({

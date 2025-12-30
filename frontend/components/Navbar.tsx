@@ -5,12 +5,14 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
+    // Force rebuild
     const pathname = usePathname();
     const { user } = useAuth();
 
     const navLinks = [
         { name: 'Home', href: '/' },
         { name: 'Courses', href: '/courses' },
+        { name: 'Contests', href: '/contests' },
         { name: 'Leaderboard', href: '/leaderboard' },
         { name: 'Contact', href: '/contact' },
     ];

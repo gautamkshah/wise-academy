@@ -34,7 +34,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             if (response.ok) {
                 const data = await response.json();
-                setUser({ ...firebaseUser, ...data.user });
+                const enhancedUser = firebaseUser as User;
+                Object.assign(enhancedUser, data.user);
+                setUser(enhancedUser);
             } else {
                 setUser(firebaseUser);
             }

@@ -51,4 +51,35 @@ export class LeetCodeFetcher implements IPlatformFetcher {
             return null;
         }
     }
+
+    async fetchRecentSubmissions(username: string): Promise<any[] | null> {
+        try {
+            this.logger.log(`Fetching recent submissions for: ${username}`);
+            const query = `
+                query recentAcSubmissions($username: String!, $limit: Int!) {
+                    recentAcSubmissionList(username: $username, limit: $limit) {
+                        id
+                        title
+                        titleSlug
+                        timestamp
+                    }
+                }
+            `;
+
+            const response = await axios.post('https://leetcode.com/graphql', {
+                query,
+                variables: { username, limit: 20 }
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                }
+            });
+
+            return response.data.data.recentAcSubmissionList || [];
+        } catch (error) {
+            this.logger.error(`Error fetching recent submissions for ${username}:`, error.message);
+            return null;
+        }
+    }
 }

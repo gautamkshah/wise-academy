@@ -18,6 +18,7 @@ export class ChapterService {
             orderBy: { order_no: 'asc' },
             include: {
                 problems: true,
+                course: true,
             },
         });
     }
@@ -27,6 +28,7 @@ export class ChapterService {
             where: { id },
             include: {
                 problems: true,
+                course: true,
             },
         });
     }
