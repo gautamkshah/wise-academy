@@ -13,7 +13,8 @@ RUN npm ci
 
 COPY . .
 
-RUN npx prisma generate
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+RUN npx prisma generate --schema=./prisma/schema.prisma
 RUN npm run build
 RUN npm prune --production
 
