@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import ContestCard from '../../components/ContestCard';
+import { API_BASE_URL } from '../../lib/config';
 import { Trophy, Calendar, Filter, Loader2, RefreshCw } from 'lucide-react';
 
 interface Contest {
@@ -23,7 +24,7 @@ export default function ContestsPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('http://localhost:3000/contests');
+            const response = await fetch(`${API_BASE_URL}/contests`);
             if (!response.ok) throw new Error('Failed to fetch contests');
             const data = await response.json();
             setContests(data);

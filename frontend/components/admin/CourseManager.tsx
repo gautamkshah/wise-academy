@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { auth } from '../../lib/firebase';
+import { API_BASE_URL } from '../../lib/config';
 import AdminModal from './AdminModal';
 
 interface Course {
@@ -24,7 +25,7 @@ export default function CourseManager() {
 
     const fetchCourses = async () => {
         try {
-            const response = await fetch('http://localhost:3000/courses');
+            const response = await fetch(`${API_BASE_URL}/courses`);
             const data = await response.json();
             setCourses(data);
         } catch (error) {
@@ -38,8 +39,8 @@ export default function CourseManager() {
         e.preventDefault();
         const token = await auth.currentUser?.getIdToken();
         const url = editingCourse
-            ? `http://localhost:3000/courses/${editingCourse.id}`
-            : 'http://localhost:3000/courses';
+            ? `${API_BASE_URL}/courses/${editingCourse.id}`
+            : `${API_BASE_URL}/courses`;
         const method = editingCourse ? 'PUT' : 'POST';
 
         try {
@@ -68,7 +69,7 @@ export default function CourseManager() {
         const token = await auth.currentUser?.getIdToken();
 
         try {
-            const res = await fetch(`http://localhost:3000/courses/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/courses/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

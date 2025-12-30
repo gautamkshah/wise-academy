@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '../../../components/Navbar';
 import { useAuth } from '../../../context/AuthContext';
 import { ChevronLeft, BookOpen, Trophy, CheckCircle, Circle, BarChart3, Layers } from 'lucide-react';
+import { API_BASE_URL } from '../../../lib/config';
 
 interface ProblemLite {
     id: string;
@@ -37,7 +38,7 @@ export default function CourseDetailPage() {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/courses/${id}`);
+                const response = await fetch(`${API_BASE_URL}/courses/${id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setCourse(data);
@@ -56,7 +57,7 @@ export default function CourseDetailPage() {
         const fetchProgress = async () => {
             if (!user) return;
             try {
-                const response = await fetch(`http://localhost:3000/progress/${user.uid}`);
+                const response = await fetch(`${API_BASE_URL}/progress/${user.uid}`);
                 if (response.ok) {
                     const data = await response.json();
                     const solvedIds = new Set<string>(data.filter((p: any) => p.status === 'SOLVED').map((p: any) => p.problem_id as string));
@@ -150,8 +151,8 @@ export default function CourseDetailPage() {
                         <div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className={`px-3 py-1 rounded-full text-xs font-bold border ${course.level === 'Beginner' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                                        course.level === 'Intermediate' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
-                                            'bg-red-500/10 text-red-400 border-red-500/20'
+                                    course.level === 'Intermediate' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                                        'bg-red-500/10 text-red-400 border-red-500/20'
                                     }`}>
                                     {course.level}
                                 </span>

@@ -6,6 +6,7 @@ import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import { auth } from '../../lib/firebase';
+import { API_BASE_URL } from '../../lib/config';
 
 interface Stats {
     total_solved: number;
@@ -57,7 +58,7 @@ export default function DashboardPage() {
     const fetchDashboardData = async (userId: string, token: string) => {
         try {
             // Fetch user data including handles
-            const userRes = await fetch(`http://localhost:3000/users/${userId}`, {
+            const userRes = await fetch(`${API_BASE_URL}/users/${userId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             let userData = null;
@@ -66,7 +67,7 @@ export default function DashboardPage() {
             }
 
             // Fetch progress stats
-            const progressRes = await fetch(`http://localhost:3000/progress/${userId}`, {
+            const progressRes = await fetch(`${API_BASE_URL}/progress/${userId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             let solvedCount = 0;
@@ -105,7 +106,7 @@ export default function DashboardPage() {
 
             console.log(`Connecting ${showHandleModal} handle: ${handleInput}`);
 
-            const response = await fetch('http://localhost:3000/users/handles', {
+            const response = await fetch(`${API_BASE_URL}/users/handles`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { API_BASE_URL } from '../lib/config';
 
 interface User extends FirebaseUser {
     role?: 'USER' | 'ADMIN';
@@ -26,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const syncWithBackend = async (firebaseUser: FirebaseUser) => {
         try {
             const token = await firebaseUser.getIdToken();
-            const response = await fetch('http://localhost:3000/auth/login', {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token }),

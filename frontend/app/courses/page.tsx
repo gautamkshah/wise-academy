@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
+import { API_BASE_URL } from '../../lib/config';
 
 interface Course {
     id: string;
@@ -18,7 +19,7 @@ export default function CoursesPage() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await fetch('http://localhost:3000/courses');
+                const response = await fetch(`${API_BASE_URL}/courses`);
                 if (response.ok) {
                     const data = await response.json();
                     setCourses(data);

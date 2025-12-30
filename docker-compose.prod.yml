@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: wise-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Mount the firebase service account key into the container
+      # Ensure this file exists on the host machine at this path
+      - ./backend/service-account.json:/app/service-account.json
+  # Optional: Uncomment to run frontend containerized
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: wise-frontend
+  #   restart: always
+  #   ports:
+  #     - "3001:3000"
+  #   env_file:
+  #     - ./frontend/.env.local

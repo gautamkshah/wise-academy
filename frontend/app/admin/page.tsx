@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '../../lib/firebase';
+import { API_BASE_URL } from '../../lib/config';
 import Navbar from '../../components/Navbar';
 import CourseManager from '../../components/admin/CourseManager';
 import ChapterManager from '../../components/admin/ChapterManager';
@@ -42,10 +43,10 @@ export default function AdminPage() {
         try {
             // In a real app, you'd have an endpoint like /admin/stats
             // For now, let's fetch counts from their respective endpoints
-            const coursesRes = await fetch('http://localhost:3000/courses', {
+            const coursesRes = await fetch(`${API_BASE_URL}/courses`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const usersRes = await fetch('http://localhost:3000/users/rankings', {
+            const usersRes = await fetch(`${API_BASE_URL}/users/rankings`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 

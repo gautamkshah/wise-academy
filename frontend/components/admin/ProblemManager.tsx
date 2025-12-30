@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { auth } from '../../lib/firebase';
+import { API_BASE_URL } from '../../lib/config';
 import AdminModal from './AdminModal';
 
 interface Course { id: string; title: string; }
@@ -48,7 +49,7 @@ export default function ProblemManager() {
 
     const fetchCourses = async () => {
         try {
-            const res = await fetch('http://localhost:3000/courses');
+            const res = await fetch(`${API_BASE_URL}/courses`);
             const data = await res.json();
             setCourses(data);
         } catch (e) { console.error(e); }
@@ -56,7 +57,7 @@ export default function ProblemManager() {
 
     const fetchChapters = async (courseId: string) => {
         try {
-            const res = await fetch(`http://localhost:3000/chapters/course/${courseId}`);
+            const res = await fetch(`${API_BASE_URL}/chapters/course/${courseId}`);
             const data = await res.json();
             setChapters(data);
         } catch (e) { console.error(e); }
@@ -65,7 +66,7 @@ export default function ProblemManager() {
     const fetchProblems = async (chapterId: string) => {
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:3000/problems/chapter/${chapterId}`);
+            const res = await fetch(`${API_BASE_URL}/problems/chapter/${chapterId}`);
             const data = await res.json();
             setProblems(data);
         } catch (e) { console.error(e); }
@@ -76,8 +77,8 @@ export default function ProblemManager() {
         e.preventDefault();
         const token = await auth.currentUser?.getIdToken();
         const url = editingProblem
-            ? `http://localhost:3000/problems/${editingProblem.id}`
-            : 'http://localhost:3000/problems';
+            ? `${API_BASE_URL}/problems/${editingProblem.id}`
+            : `${API_BASE_URL}/problems`;
         const method = editingProblem ? 'PUT' : 'POST';
 
         const payload = {
@@ -109,7 +110,7 @@ export default function ProblemManager() {
         if (!confirm('Are you sure?')) return;
         const token = await auth.currentUser?.getIdToken();
         try {
-            const res = await fetch(`http://localhost:3000/problems/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/problems/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -182,7 +183,7 @@ export default function ProblemManager() {
                                     <h3 className="font-bold text-white">{p.title}</h3>
                                     <div className="flex gap-2 mt-1">
                                         <span className={`text-[10px] px-2 py-0.5 rounded uppercase font-bold ${p.difficulty === 'Easy' ? 'bg-green-500/10 text-green-400' :
-                                                p.difficulty === 'Medium' ? 'bg-yellow-500/10 text-yellow-400' : 'bg-red-500/10 text-red-400'
+                                            p.difficulty === 'Medium' ? 'bg-yellow-500/10 text-yellow-400' : 'bg-red-500/10 text-red-400'
                                             }`}>{p.difficulty}</span>
                                         <span className="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded uppercase">{p.platform}</span>
                                     </div>

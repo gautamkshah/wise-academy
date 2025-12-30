@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '../../../components/Navbar';
 import { useAuth } from '../../../context/AuthContext';
+import { API_BASE_URL } from '../../../lib/config';
 import {
     CheckCircle2,
     Circle,
@@ -60,7 +61,7 @@ export default function ChapterPage() {
 
     const fetchUserProgress = async (userId: string) => {
         try {
-            const response = await fetch(`http://localhost:3000/progress/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/progress/${userId}`);
             if (response.ok) {
                 const data = await response.json();
                 const solved = new Set<string>(data.filter((p: any) => p.status === 'SOLVED').map((p: any) => p.problem_id));
@@ -73,7 +74,7 @@ export default function ChapterPage() {
 
     const fetchChapter = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/chapters/${id}`);
+            const response = await fetch(`${API_BASE_URL}/chapters/${id}`);
             if (response.ok) {
                 const data = await response.json();
                 setChapter(data);
@@ -101,7 +102,7 @@ export default function ChapterPage() {
         setSolvingId(problemId);
         try {
             const token = await user.getIdToken();
-            const response = await fetch('http://localhost:3000/progress/solve', {
+            const response = await fetch(`${API_BASE_URL}/progress/solve`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +139,7 @@ export default function ChapterPage() {
         setIsSyncing(true);
         try {
             const token = await user.getIdToken();
-            const response = await fetch('http://localhost:3000/progress/sync', {
+            const response = await fetch(`${API_BASE_URL}/progress/sync`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -192,7 +193,7 @@ export default function ChapterPage() {
     const stats = useMemo(() => {
         if (!chapter) return { total: 0, solved: 0, easy: 0, medium: 0, hard: 0, easySolved: 0, mediumSolved: 0, hardSolved: 0 };
         const total = chapter.problems.length;
-        const solved = solvedProblems.size;
+        const solved = chapter.problems.filter(p => solvedProblems.has(p.id)).length;
 
         return {
             total,

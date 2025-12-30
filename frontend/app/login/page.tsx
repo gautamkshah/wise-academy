@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '../../lib/firebase';
+import { API_BASE_URL } from '../../lib/config';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 export default function LoginPage() {
@@ -21,7 +22,7 @@ export default function LoginPage() {
             const token = await user.getIdToken();
 
             // Send token to backend
-            const response = await fetch('http://localhost:3000/auth/login', {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
