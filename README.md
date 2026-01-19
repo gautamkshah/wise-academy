@@ -48,13 +48,13 @@
 
 ```mermaid
 graph TD
-    User((User)) -->|HTTPS| Frontend[Next.js Frontend\n(AWS Amplify)]
-    Frontend -->|API Requests| Backend[NestJS Backend\n(AWS EC2 / Docker)]
+    User((User)) -->|HTTPS| Frontend["Next.js Frontend<br>(AWS Amplify)"]
+    Frontend -->|API Requests| Backend["NestJS Backend<br>(AWS EC2 / Docker)"]
     Frontend -->|Auth| Firebase[Firebase Auth]
     
-    Backend -->|Queries| DB[(PostgreSQL\nAWS RDS)]
+    Backend -->|Queries| DB[("PostgreSQL<br>AWS RDS")]
     Backend -->|Verify Token| Firebase
-    Backend -->|Scrape Stats| External[LeetCode / CodeChef / etc.]
+    Backend -->|Scrape Stats| External["LeetCode / CodeChef / etc."]
 ```
 
 ---
