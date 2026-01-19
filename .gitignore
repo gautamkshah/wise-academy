@@ -41,3 +41,6 @@ backend/service-account.json
 
 # Prisma
 prisma/migrations/*/migration.sql
+*.pem
+backend.tar.gz
+backend/.env.production
