@@ -38,13 +38,13 @@ export default function CoursesPage() {
         <div className="min-h-screen bg-gray-900 text-white flex flex-col">
             <Navbar />
 
-            <main className="flex-grow container mx-auto px-6 py-12">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <main className="flex-grow container mx-auto px-6 py-8 md:py-12">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                     <div>
-                        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                             Explore Our Courses
                         </h1>
-                        <p className="text-gray-400">Level up your skills with our curated learning paths.</p>
+                        <p className="text-gray-400 text-sm md:text-base">Level up your skills with our curated learning paths.</p>
                     </div>
                 </div>
 

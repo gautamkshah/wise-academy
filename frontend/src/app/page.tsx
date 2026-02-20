@@ -7,29 +7,29 @@ export default function Home() {
             <Navbar />
 
             {/* Hero Section */}
-            <main className="flex flex-col items-center justify-center text-center mt-20 px-4">
-                <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-300 text-sm font-medium">
+            <main className="flex flex-col items-center justify-center text-center mt-12 md:mt-20 px-6">
+                <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-900/20 border border-blue-500/20 text-blue-300 text-xs sm:text-sm font-medium">
                     🚀 The Ultimate Coding Platform
                 </div>
-                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
-                    Master <span className="text-blue-500">DSA</span> & <br />
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight mb-6 md:mb-8 leading-[1.1]">
+                    Master <span className="text-blue-500">DSA</span> & <br className="hidden sm:block" />
                     Crack <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Top Companies</span>
                 </h1>
                 <p className="max-w-2xl text-lg text-gray-400 mb-10 leading-relaxed">
                     Join <b>1000+ students</b> mastering Data Structures, Algorithms, and System Design.
                     Track your progress across LeetCode, CodeForces, and CodeChef in one place.
                 </p>
-                <div className="flex gap-4">
-                    <Link href="/courses" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/20 transition-all transform hover:scale-105">
+                <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4 sm:px-0">
+                    <Link href="/courses" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/20 transition-all transform hover:scale-105 text-center">
                         Start Learning
                     </Link>
-                    <Link href="/leaderboard" className="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl font-bold text-lg transition-all">
+                    <Link href="/leaderboard" className="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl font-bold text-lg transition-all text-center">
                         View Leaderboard
                     </Link>
                 </div>
 
                 {/* Stats / Social Proof */}
-                <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-12 text-center opacity-80">
+                <div className="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center opacity-80">
                     <div>
                         <div className="text-3xl font-bold text-white">450+</div>
                         <div className="text-sm text-gray-500 mt-1">Curated Problems</div>

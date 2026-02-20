@@ -46,25 +46,25 @@ export default function ContestsPage() {
         <div className="min-h-screen bg-[#0a0f1c] text-white flex flex-col">
             <Navbar />
 
-            <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+            <main className="flex-grow container mx-auto px-6 py-8 md:py-12 max-w-7xl">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-end md:items-center gap-6 mb-12">
-                    <div>
-                        <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
-                            <Trophy className="w-8 h-8 text-yellow-500" />
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-12">
+                    <div className="max-w-xl">
+                        <h1 className="text-3xl md:text-4xl font-bold mb-3 flex items-center gap-3">
+                            <Trophy className="w-8 md:w-10 h-8 md:h-10 text-yellow-500" />
                             Upcoming Contests
                         </h1>
-                        <p className="text-gray-400">
+                        <p className="text-gray-400 text-sm md:text-base leading-relaxed">
                             Track upcoming coding contests from major platforms in one place.
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-gray-800/40 p-1.5 rounded-2xl border border-gray-700/50 backdrop-blur-sm">
+                    <div className="w-full lg:w-auto flex items-center gap-2 md:gap-3 bg-gray-800/40 p-2 rounded-2xl border border-gray-700/50 backdrop-blur-sm overflow-x-auto no-scrollbar">
                         {['All', 'LeetCode', 'CodeForces', 'CodeChef'].map((p) => (
                             <button
                                 key={p}
                                 onClick={() => setFilter(p as any)}
-                                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${filter === p
+                                className={`whitespace-nowrap px-4 md:px-6 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${filter === p
                                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25'
                                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
